@@ -1,3 +1,4 @@
+<?php include('config/connect_db.php'); ?>
 <!DOCTYPE hmtl>
 <html lang="en">
     <head>
@@ -12,7 +13,7 @@
     <body>
     <nav class="navbar navbar-expand-md ">
             <div class="logo col-sm mb-2 d-flex justify-content-center">
-                <img src="img/logo.jpg" alt="" width="100" height="95">
+                <a href="index.php"><img src="img/logo.jpg" alt="" width="100" height="95"></a>
             </div>
 
         <form class="form-inline col-sm justify-content-center">
@@ -24,7 +25,7 @@
                 <a class="nav-link" href="index.php"> <i class="fas fa-home"></i> Store</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="drinks.php"><i class="fas fa-mug-hot"></i> Drinks</a>
+                <a class="nav-link" href="product.php"><i class="fas fa-mug-hot"></i> Drinks</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="order.php"><i class="fas fa-cloud"></i> Orders</a>

@@ -28,46 +28,34 @@
             </a>
         </div>
             <div class="container">
-            <h2 class="mt-5 text-center">DANH MỤC SẢN PHẨM</h2>
+            <h2 class="mt-5 text-center">DANH MỤC THỨC UỐNG</h2>
             <div class="separator-icon gray"></div>
-            <div class="row category-list mb-5">
-            <div class="col-lg-3 col-md-6 mt-3">
-                <div class="card text-center">
-                    <img class="card-img-top" src="..." alt="Card image cap" >
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <a href="#" class="btn btn-outline-success">Chi tiết</a>
-                    </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mt-3">
-                    <div class="card text-center">
-                    <img class="card-img-top" src="..." alt="Card image cap" >
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <a href="#" class="btn btn-outline-success">Chi tiết</a>
-                    </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mt-3">
-                    <div class="card text-center">
-                    <img class="card-img-top" src="..." alt="Card image cap" >
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <a href="#" class="btn btn-outline-success">Chi tiết</a>
-                    </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mt-3">
-                    <div class="card text-center">
-                    <img class="card-img-top" src="..." alt="Card image cap" >
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <a href="#" class="btn btn-outline-success">Chi tiết</a>
-                    </div>
-                    </div>
-                </div>
+            <div class="row category-list mb-5  justify-content-center">
+            <?php
+            $sql = "SELECT * FROM tbl_category";
+            $res = mysqli_query($conn,$sql);
+            $count = mysqli_num_rows($res);
+            if($count>0){
+                while($row=mysqli_fetch_assoc($res)){
+                    $cat_id=$row['cat_id'];
+                    $cat_name=$row['cat_name'];
+                    $cat_img=$row['cat_img'];
+                ?>
                     
+                        <div class="col-lg-3 col-md-6 mt-3">
+                            <div class="card text-center">
+                            <img class="card-img-top" src="img/<?php echo $cat_img ?>" width="250" height="170" alt="Card image cap" >
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $cat_name ?></h5>
+                                <a href="product-cat.php?cat_id=<?php echo $cat_id ?>" class="btn btn-outline-success">Xem menu</a>
+                            </div>
+                            </div>
+                        </div>      
+                        
+                <?php
+                }
+            }
+        ?> 
             </div>
             <h2 class="mt-5 text-center">TIN TỨC</h2>
             <div class="separator-icon gray"></div>
