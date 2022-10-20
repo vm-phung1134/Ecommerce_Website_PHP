@@ -1,4 +1,14 @@
-<?php include('lib/header.php'); ?>
+<?php
+      try {
+        include('lib/header.php');
+        $dbh = getDB();
+        $stmt = $dbh->prepare('select * from tbl_category');
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+        } catch (PDOException $ex) {
+        exit("Da co loi xay ra: " . $ex->getMessage());
+        }
+?>
         <main>
         <div id="carousel-example-generic" class="carousel slide text-center mt-1" data-interval="5000" data-ride="carousel">
             <ul class="carousel-indicators">
@@ -8,13 +18,13 @@
             </ul>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="img-fluid w-100" alt="First slide" src="img/slide-1.png" />
+                    <img class="img-fluid w-100" alt="First slide" src="img/slide-1.jpg" />
                 </div>
                 <div class="carousel-item">
-                    <img class="img-fluid w-100" alt="Second slide" src="img/slide-5.jpg" />
+                    <img class="img-fluid w-100" alt="Second slide" src="img/slide-2.jpg" />
                 </div>
                 <div class="carousel-item">
-                    <img class="img-fluid w-100" alt="Third slide" src="img/slide-1.png" />
+                    <img class="img-fluid w-100" alt="Third slide" src="img/slide-3.png" />
                 </div>
             </div>
             <!-- Controls -->
@@ -32,29 +42,21 @@
             <div class="separator-icon gray"></div>
             <div class="row category-list mb-5  justify-content-center">
             <?php
-            $sql = "SELECT * FROM tbl_category";
-            $res = mysqli_query($conn,$sql);
-            $count = mysqli_num_rows($res);
-            if($count>0){
-                while($row=mysqli_fetch_assoc($res)){
-                    $cat_id=$row['cat_id'];
-                    $cat_name=$row['cat_name'];
-                    $cat_img=$row['cat_img'];
+            foreach ($rows as $category){
                 ?>
-                    
-                        <div class="col-lg-3 col-md-6 mt-3">
-                            <div class="card text-center">
-                            <img class="card-img-top" src="img/<?php echo $cat_img ?>" width="250" height="170" alt="Card image cap" >
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $cat_name ?></h5>
-                                <a href="product-cat.php?cat_id=<?php echo $cat_id ?>" class="btn btn-outline-success">Xem menu</a>
-                            </div>
-                            </div>
-                        </div>      
+                    <div class="col-lg-4 col-md-6 mt-3">
+                        <div class="d-flex justify-content-center shadow-img">
+                            <a href="product-cat.php?cat_id=<?php echo  $category["cat_id"]?>"><img class="m-2 rounded " src="img/<?php echo $category["cat_img"]?>" width="330" height="300"></a>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                          <h5 class="text-center text-uppercase">⊰ <?php echo  $category["cat_name"]?> ⊱</h5>  
+                        </div>
                         
+                    </div> 
+                    
                 <?php
-                }
             }
+           
         ?> 
             </div>
             <h2 class="mt-5 text-center">TIN TỨC</h2>
@@ -96,6 +98,9 @@
                 <a href="#" class="btn btn-outline-success">Chi tiết</a>
                 </div>
             </li>
+            <div class="d-flex justify-content-center">
+                <a href="#" class="btn btn-outline-success"> <i class="	fas fa-arrow-down"></i> Xem Thêm</a>
+            </div>
         </ul>
         </div>
         </main>

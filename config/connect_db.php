@@ -1,10 +1,29 @@
 <?php
     session_start();
-    define('SITEURL','http://localhost/web_drink/');
-    define('LOCALHOST','localhost');
-    define('DB_USERNAME','root');
-    define('DB_PASSWORD','');
-    define('DB_NAME','web_drink');
-    $conn = mysqli_connect(LOCALHOST,DB_USERNAME,DB_PASSWORD) or die();
-    $db_select = mysqli_select_db($conn,DB_NAME) or die();
- ?>
+    define('DB_SERVER', 'localhost');
+    define('DB_USERNAME', 'root');
+    define('DB_PASSWORD', '');
+    define('DB_DATABASE', 'web_drink');
+    define('BASE_URL_PATH', '/');
+    define('BASE_URL_LOGIN', 'http://localhost/tech_web/login.php');
+    function getDB(){
+        $dbhost = DB_SERVER;
+        $dbuser = DB_USERNAME;
+        $dbpass = DB_PASSWORD;
+        $dbname = DB_DATABASE;
+        try{
+            $dbConnect = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+            $dbConnect->exec("set names utf8");
+            $dbConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $dbConnect;
+
+        } catch(PDOException $e){
+            echo 'Connection failed' . $e->getMessage();
+        }
+    }
+    function redirect($location)
+    {
+        header('Location: ' . $location);
+        exit();
+    }
+?>

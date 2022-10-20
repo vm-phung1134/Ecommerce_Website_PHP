@@ -1,23 +1,27 @@
-<?php  include('lib/header.php'); ?>
-    <div class="container">
+<?php
+try {
+    include('lib/header.php');
+    $dbh = getDB();
+    if (isset($_GET['pro_id'])) {
+        $pro_id = $_GET['pro_id'];
+        $stmt = $dbh->prepare("select * from tbl_product where pro_id='$pro_id'");
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+    }
+}
+catch (PDOException $ex) {
+    exit("Da co loi xay ra: " . $ex->getMessage());
+}
+?>
+<div class="container">
     <?php
-        if(isset($_GET['pro_id'])){
-            $product_id = $_GET['pro_id'];
-            $sql="SELECT * FROM tbl_product WHERE pro_id=$product_id";
-            $res = mysqli_query($conn,$sql);
-            $count = mysqli_num_rows($res);
-            $row=mysqli_fetch_assoc($res);
-            if($count>0){
-                    $pro_id=$row['pro_id'];
-                    $pro_name=$row['pro_name'];
-                    $img=$row['img'];
-                    $price=$row['price'];
+        foreach($rows as $product){
                 ?>    
                     <div class="row border border-dark my-3 p-5 rounded">
-                    <img class="mr-3 col-md-5 col-12 "style="width: 16rem;"  src="img/<?php echo $img ?>" alt="Generic placeholder image">
+                    <img class="mr-3 col-md-5 col-12 "  src="img/<?php echo $product['img']?>" alt="Generic placeholder image">
                     <form method="GET" action="order.php" class="media-body col-md-7 col-12 mt-3">
                     <h5 class="text-dark">⇨ Chi tiết đặt hàng</h5>
-                    <h2 class="text-success"><?php echo $pro_name ?></h2>
+                    <h2 class="text-success"><?php echo $product['pro_name'] ?></h2>
                         <div class="form-group row mt-4">
                                 <label class="col-sm-3 col-form-label ">Kích Cỡ : </label>
                                 <div id="option-form" class="col-sm-9 btn-group btn-group-toggle" data-toggle="buttons">
@@ -33,9 +37,9 @@
                                 </div>
                             </div>
                         <div class="form-group row">
-                            <label  class="col-sm-3 col-form-label ">Giá : </label>
+                            <label  class="col-sm-3 col-form-label ">Giá bán: </label>
                             <div class="col-sm-7">
-                                <h4><?php echo $price.' VNĐ' ?></h4>
+                                <h4><?php echo $product['price'].' VNĐ' ?></h4>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -53,15 +57,24 @@
                     <div class="form-group row">
                         <label  class="col-sm-3 col-form-label"></label>
                         <div class="col-sm-9 ">
-                            <a href="cart.php" data-id="<?php echo $pro_id; ?>" class="btn btn-success" data-toggle="modal" data-target="#MessageModal" ><i class="fas fa-cart-arrow-down"></i> Thêm vào giỏ hàng</a>
-                            <button type="submit" class="btn btn-danger"><i class="fas fa-cash-register"></i> Mua Ngay</button>
+        <?php 
+            if(isset($_SESSION['login'])){
+            ?>
+                <a href="cart.php" data-id="<?php echo $product['pro_id']; ?>" class="btn btn-success" data-toggle="modal" data-target="#MessageModal" ><i class="fas fa-cart-arrow-down"></i> Thêm vào giỏ hàng</a>            
+                <button type="submit" class="btn btn-danger"><i class="fas fa-cash-register"></i> Mua Ngay</button>
+            <?php
+            }else{
+            ?>
+                <a href="login.php"  class="btn btn-danger">Opss! Đăng nhập cái đã</a>
+            <?php
+            }
+        ?>
                         </div>
                     </div>
                     </form>
                 </div>
                 <?php
             }
-        }
     ?>
     <form action="" id="add-cart-form" method="POST"></form>
         <!--Message modal-->
@@ -80,8 +93,9 @@
             </div>
             </div>
         </div>
-        </div>
     </div>
+</div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function(){
             var productId;
