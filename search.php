@@ -16,7 +16,7 @@ catch (PDOException $ex) {
 ?>
 <img src="https://phuclong.com.vn/uploads/category/f9fda0c654e809-4b9491980fcdaetraolong1.jpeg" class="img-fluid" alt="">
 <div class="container">
-    <h2 class="text-center my-3">SẢN PHẨM</h2>
+    <h2 class="text-center my-3">KẾT QUẢ TÌM KIẾM SẢN PHẨM</h2>
     <div class="separator-icon gray"></div>
     <div class="row d-lex justify-content-center">
     <!--------card product--------->
